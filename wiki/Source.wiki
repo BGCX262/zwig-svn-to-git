@@ -1,0 +1,2 @@
+ * SVN: http://code.google.com/p/zwig/source/checkout  
+ * GIT: https://github.com/arnaud-lb/Zwig

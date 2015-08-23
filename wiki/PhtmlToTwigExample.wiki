@@ -1,0 +1,51 @@
+Phtml :
+
+{{{
+
+<head>
+  <?php echo $this->headTitle($this->title) ?>
+</head>
+
+<!-- ... -->
+
+<h1><?php echo $this->escape($this->title) ?></h1>
+
+<ul>
+ <?php foreach($this->items as $item): ?>
+   <li>
+     <p>
+       <a href="<?php echo $this->url(array('action' => 'view')) ?>"><?php echo $this->escape($item->name) ?></a>
+       <?php echo $this->partial('_part.phtml', array('item' => $item)) ?>
+     </p>
+     <?php echo $this->formatMarkup($titem->description) ?>
+   </li>
+ <?php endforeach ?>
+</ul>
+
+}}}
+
+Twig/Zwig with auto escaping :
+
+{{{
+
+<head>
+  {{ headTitle(title) }}
+</head>
+
+<!-- ... -->
+
+<h1>{{ title }}</h1>
+
+<ul>
+ {% for item in items %}
+   <li>
+     <p>
+       <a href="{{ url({'action': 'view'}) }}">{{ name }}</a>
+       {% include '_part.phtml' with {'item': item} %}
+     </p>
+     {{ formatMarkup(description) }}
+   </li>
+ {% endfor %}
+</ul>
+
+}}}

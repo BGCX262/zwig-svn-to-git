@@ -1,0 +1,46 @@
+#summary How to use Zwig
+
+Zwig extends `Zend_View_Abstract` and you just have to replace the `Zend_View` instance by a `Zwig_View` instance.
+
+  * Checkout Twig source into the application's library/ folder
+  * Checkout Zwig source into the application's library/ folder
+  * Remove any view resource from application.ini or Bootstrap.php
+  * Create a `Bootstrap->_initView()` as follows:
+{{{
+function _initView() {
+
+        $autoloader = Zend_Loader_Autoloader::getInstance();
+        $autoloader->registerNamespace('Twig');
+        $autoloader->registerNamespace('Zwig');
+
+        $view = new Zwig_View(array(
+            'encoding' => 'UTF-8',
+            'helperPath' => array(
+                /* ... */
+            ),
+        ));
+
+        $loader = new Twig_Loader_Filesystem(array());
+        $zwig = new Zwig_Environment($view, $loader, array(
+            /* optional * /
+            'cache' => APPLICATION_PATH . '/cache/twig/',
+            'auto_reload' => true,
+            /**/
+        ));
+
+        $view->setEngine($zwig);
+        $view->doctype(Zend_View_Helper_Doctype::XHTML1_STRICT);
+
+        $viewRenderer = new Zend_Controller_Action_Helper_ViewRenderer($view, array(
+            /* optional * /
+            'viewSuffix' => 'html',
+            /**/
+        ));
+        Zend_Controller_Action_HelperBroker::addHelper($viewRenderer);
+
+        return $view;
+}
+}}}
+  * from now the application will start to parse the view templates with Twig. Optionally, the `viewSuffix` can be changed from phtml to html or anything else.
+
+See also PhtmlToTwigExample
